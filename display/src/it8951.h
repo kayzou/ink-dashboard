@@ -11,7 +11,7 @@
 #define CS                8
 #define HRDY            24
 #define RESET            17
-#define VCOM            1500 //e.g. -1.53 = 1530 = 0x5FA
+#define VCOM            1650 //e.g. -1.53 = 1530 = 0x5FA
 
 //prototype of structure
 //structure prototype 1
@@ -59,7 +59,7 @@ typedef struct {
 #define USDEF_I80_CMD_DPY_AREA     0x0034
 #define USDEF_I80_CMD_GET_DEV_INFO 0x0302
 #define USDEF_I80_CMD_DPY_BUF_AREA 0x0037
-#define USDEF_I80_CMD_VCOM           0x0039
+#define USDEF_I80_CMD_VCOM         0x0039
 
 //Panel
 #define IT8951_PANEL_WIDTH   1024 //it Get Device information
@@ -161,6 +161,8 @@ void IT8951WriteReg(uint16_t usRegAddr, uint16_t usValue);
 uint16_t IT8951GetVCOM(void);
 
 void IT8951SetVCOM(uint16_t vcom);
+
+void RENDER_THE_GOD_DAMN_PNG_SHINJI(const char *path);
 
 #endif
 

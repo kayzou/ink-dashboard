@@ -829,3 +829,30 @@ void IT8951Display1bppExample2() {
     IT8951DisplayArea1bpp(0, 0, gstI80DevInfo.usPanelW, gstI80DevInfo.usPanelH, 0, 0x00, 0xFF);
 }
 
+void RENDER_THE_GOD_DAMN_PNG_SHINJI(const char *path) {
+    IT8951LdImgInfo stLdImgInfo;
+    IT8951AreaImgInfo stAreaImgInfo;
+
+    EPD_Clear(0xff);
+
+    DASH_draw_png_image(path);
+
+    IT8951WaitForDisplayReady();
+
+    //Setting Load image information
+    stLdImgInfo.ulStartFBAddr = (uint32_t) gpFrameBuf;
+    stLdImgInfo.usEndianType = IT8951_LDIMG_L_ENDIAN;
+    stLdImgInfo.usPixelFormat = IT8951_8BPP;
+    stLdImgInfo.usRotate = IT8951_ROTATE_0;
+    stLdImgInfo.ulImgBufBaseAddr = gulImgBufAddr;
+    //Set Load Area
+    stAreaImgInfo.usX = 0;
+    stAreaImgInfo.usY = 0;
+    stAreaImgInfo.usWidth = gstI80DevInfo.usPanelW;
+    stAreaImgInfo.usHeight = gstI80DevInfo.usPanelH;
+
+    //Load Image from Host to IT8951 Image Buffer
+    IT8951HostAreaPackedPixelWrite(&stLdImgInfo, &stAreaImgInfo);//Display function 2
+    //Display Area ?V (x,y,w,h) with mode 2 for fast gray clear mode - depends on current waveform
+    IT8951DisplayArea(0, 0, gstI80DevInfo.usPanelW, gstI80DevInfo.usPanelH, 2);
+}

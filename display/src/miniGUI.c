@@ -601,8 +601,65 @@ uint8_t Show_bmp(uint32_t x, uint32_t y, char *path) {
     return (0);
 }
 
+#include <png.h>
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <math.h>
+
+static void fatal_error(const char *message, ...) {
+    va_list args;
+    va_start (args, message);
+    vfprintf(stderr, message, args);
+    va_end (args);
+    exit(EXIT_FAILURE);
+}
 
 
+void DASH_draw_png_image(const char *path) {
+    png_structp png_ptr;
+    png_infop info_ptr;
+    FILE *fp;
+    png_uint_32 width;
+    png_uint_32 height;
+    int bit_depth;
+    int color_type;
+    int interlace_method;
+    int compression_method;
+    int filter_method;
+    png_bytepp rows;
+    fp = fopen(path, "rb");
+    if (!fp) {
+        fatal_error("Cannot open '%s': %s\n", path, strerror(errno));
+    }
+    png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    if (!png_ptr) {
+        fatal_error("Cannot create PNG read structure");
+    }
+    info_ptr = png_create_info_struct(png_ptr);
+    if (!png_ptr) {
+        fatal_error("Cannot create PNG info structure");
+    }
+    png_init_io(png_ptr, fp);
+    png_read_png(png_ptr, info_ptr, 0, 0);
+    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth,
+                 &color_type, &interlace_method, &compression_method,
+                 &filter_method);
+    rows = png_get_rows(png_ptr, info_ptr);
 
+
+    for (int y = 0; y < height; y++) {
+        png_bytep row;
+        row = rows[y];
+        for (int x = 0; x < width * 4; x++) {
+            const int i = x * 4;
+            png_byte color = (row[i] + row[i + 1] + row[i + 2]) / 3;
+            color = (png_byte) ((color * 16) / 16);
+            EPD_DrawPixel(x, y, color);
+        }
+    }
+}
 
 
