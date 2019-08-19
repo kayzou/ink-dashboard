@@ -74,6 +74,6 @@ void EPD_DrawMatrix(uint16_t Xpos, uint16_t Ypos, uint16_t Width, uint16_t High,
 
 uint8_t Show_bmp(uint32_t x, uint32_t y, char *path);
 
-void DASH_draw_png_image(const char *path);
+int* DASH_draw_png_image(const char *path);
 
 #endif

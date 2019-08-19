@@ -618,7 +618,7 @@ static void fatal_error(const char *message, ...) {
 }
 
 
-void DASH_draw_png_image(const char *path) {
+int* DASH_draw_png_image(const char *path) {
     png_structp png_ptr;
     png_infop info_ptr;
     FILE *fp;
@@ -649,6 +649,7 @@ void DASH_draw_png_image(const char *path) {
                  &filter_method);
     rows = png_get_rows(png_ptr, info_ptr);
 
+    int *partial = malloc(4);
 
     for (int y = 0; y < height; y++) {
         png_bytep row;
@@ -657,9 +658,21 @@ void DASH_draw_png_image(const char *path) {
             const int i = x * 4;
             png_byte color = (row[i] + row[i + 1] + row[i + 2]) / 3;
             color = (png_byte) ((color * 16) / 16);
+
+            if (gpFrameBuf[y * gstI80DevInfo.usPanelW + x] != color) {
+                if (x < partial[0]) partial[0] = x;
+                if (y < partial[1]) partial[1] = y;
+                if (x > partial[2]) partial[2] = x;
+                if (y > partial[3]) partial[3] = y;
+            }
+
             EPD_DrawPixel(x, y, color);
         }
     }
+
+    printf("%d, %d, %d, %d", partial[0], partial[1], partial[2], partial[3]);
+
+    return partial;
 }
 
 

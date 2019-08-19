@@ -11,7 +11,7 @@
 #define CS                8
 #define HRDY            24
 #define RESET            17
-#define VCOM            1650 //e.g. -1.53 = 1530 = 0x5FA
+#define VCOM            1500 //e.g. -1.53 = 1530 = 0x5FA
 
 //prototype of structure
 //structure prototype 1

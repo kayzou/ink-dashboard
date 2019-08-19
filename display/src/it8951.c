@@ -835,7 +835,7 @@ void RENDER_THE_GOD_DAMN_PNG_SHINJI(const char *path) {
 
     EPD_Clear(0xff);
 
-    DASH_draw_png_image(path);
+    int *partial = DASH_draw_png_image(path);
 
     IT8951WaitForDisplayReady();
 

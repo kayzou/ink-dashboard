@@ -18,15 +18,16 @@ int main(int argc, char *argv[]) {
     }
 
     //system(concat("chrome --headless --screenshot --window-size=1280,1696 ", url));
-    system("chromium-browser --disable-gpu --no-sandbox --headless --screenshot --window-size=1872,1404 https://www.google.com/search?q=wetter && wait");
 
     if (IT8951_Init()) {
         printf("IT8951_Init error \n");
         return 1;
     }
 
-
-    RENDER_THE_GOD_DAMN_PNG_SHINJI("screenshot.png");
+    for (int i = 0; i < 1000; i++) {
+        system("chromium-browser --disable-gpu --no-sandbox --headless --screenshot --window-size=1872,1404 https://donjon.bin.sh/fantasy/dungeon/labyrinth.cgi && wait");
+        RENDER_THE_GOD_DAMN_PNG_SHINJI("screenshot.png");
+    }
 
     IT8951_Cancel();
 
