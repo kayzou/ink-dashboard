@@ -1,13 +1,20 @@
-<div>
-    <h1>Hello {name}!</h1>
+<div class="app">
+    <Clock class="clock"></Clock>
+    <Weather class="weather"></Weather>
 </div>
 
 <script>
-	export let name;
+    import Weather from "./Weather.svelte"
+    import Clock from "./Clock.svelte"
 </script>
 
 <style>
-	h1 {
-		color: purple;
-	}
+    .app {
+        padding: 64px 80px;
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+    }
 </style>
